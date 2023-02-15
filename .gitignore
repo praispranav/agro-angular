@@ -1,0 +1,4 @@
+node_module
+.angular
+dist
+node_modules
