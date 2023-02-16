@@ -70,7 +70,12 @@ export const MENU: MenuItem[] = [
         link: '/crop/crop-type-listjs',
         parentId: 8
       },
-
+      {
+        id: 201,
+        label: 'MENUITEMS.APPS.LIST.MASTERCROP',
+        link: '/master-crop/master-crop-listjs',
+        parentId: 8
+      },
       {
         id: 9,
         label: 'MENUITEMS.APPS.LIST.CALENDAR',

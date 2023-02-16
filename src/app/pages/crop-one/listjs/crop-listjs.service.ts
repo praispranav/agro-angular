@@ -3,11 +3,11 @@ import { Injectable, PipeTransform } from "@angular/core";
 
 import { BehaviorSubject, Observable, of, Subject } from "rxjs";
 
-import { CropType, CropListJsModel } from "./crop-listjs.model";
+import { MasterCrop, CropListJsModel } from "./crop-listjs.model";
 import { ListJs } from "./data";
 import { DecimalPipe } from "@angular/common";
 import { debounceTime, delay, switchMap, tap } from "rxjs/operators";
-import { SortColumn, SortDirection } from "./crop-listjs-sortable.directive";
+import { SortColumn, SortDirection } from "./crop-one-listjs-sortable.directive";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 interface SearchResult {
@@ -190,6 +190,18 @@ export class CropService {
     );
     return this.http.post(
       `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetCropTypeList?displayStart=0&displayLength=10&SearchCropType=null`,
+      { headers: headers }
+    );
+  }
+
+  soilTypeList() {
+    let headers = new HttpHeaders();
+    headers = headers.set(
+      "Authorization",
+      "Bearer " + localStorage.getItem("token")
+    );
+    return this.http.get(
+      `https://dev.endpoint.smartagrofarm.my/api/Lookup/LookUpSoilType`,
       { headers: headers }
     );
   }
