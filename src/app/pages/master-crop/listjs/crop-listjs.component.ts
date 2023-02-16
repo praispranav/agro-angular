@@ -18,10 +18,10 @@ import { CropService } from "./crop-listjs.service";
 import {
   NgbdOrdersSortableHeader,
   SortEvent,
-} from "./crop-listjs-sortable.directive";
+} from "./master-crop-listjs-sortable.directive";
 
 @Component({
-  selector: "app-crop-listjs",
+  selector: "app-master-crop-listjs",
   templateUrl: "./crop-listjs.component.html",
   styleUrls: ["./crop-listjs.component.scss"],
   providers: [CropService, DecimalPipe],
@@ -40,6 +40,8 @@ export class CropListjsComponent {
   cropSelected!: boolean;
   ListJsDatas: any;
   masterSelected!: boolean;
+  cropTypeList: any;
+  cropTypeId!: string;
 
   // Table data
   ListJsList!: Observable<CropListJsModel[]>;
@@ -57,7 +59,7 @@ export class CropListjsComponent {
   }
 
   ngOnInit(): void {
-    this.getCropType();
+    this.getMasterCropType();
     /**
      * BreadCrumb
      */
@@ -71,7 +73,8 @@ export class CropListjsComponent {
      */
     this.listJsForm = this.formBuilder.group({
       ids: [""],
-      crop_name: ["", [Validators.required]],
+      cropTypeId: ["", [Validators.required]],
+      masterCrop_name: ["", [Validators.required]],
       description: ["", [Validators.required]],
     });
 
@@ -83,11 +86,21 @@ export class CropListjsComponent {
     });
   }
 
-  getCropType(): void {
+  getMasterCropType(): void {
     this.service.getAll().subscribe(
       (res: any) => {
         this.listItems = res.data;
-        console.log("res", res);
+      },
+      (err) => {
+        console.log("err", err);
+      }
+    );
+  }
+
+  getCropType(): void {
+    this.service.cropTypeList().subscribe(
+      (res: any) => {
+        this.cropTypeList = res.data;
       },
       (err) => {
         console.log("err", err);
@@ -101,6 +114,12 @@ export class CropListjsComponent {
   openModal(content: any) {
     this.submitted = false;
     this.modalService.open(content, { size: "md", centered: true });
+    this.getCropType();
+  }
+
+  openCropTypePopup(cropType: any): any {
+    this.submitted = false;
+    this.modalService.open(cropType, { size: "lg", centered: true });
   }
 
   /**
@@ -122,8 +141,11 @@ export class CropListjsComponent {
             : data
         );
       } else {
-        const crop_name = this.listJsForm.get("crop_name")?.value;
-        const description = this.listJsForm.get("description")?.value;
+        this.listJsForm.controls["cropTypeId"].setValue(this.cropTypeId);
+        // const masterCrop_name = this.listJsForm.get("masterCrop_name")?.value;
+        // const description = this.listJsForm.get("description")?.value;
+        let formData = this.listJsForm.value;
+        console.log("formData", formData);
         // this.ListJsDatas.push({
         //   crop_name,
         //   description,
@@ -136,6 +158,12 @@ export class CropListjsComponent {
       this.listJsForm.reset();
     }, 2000);
     this.submitted = true;
+  }
+
+  cropTypeAdd(data: any): void {
+    this.cropTypeId=data.cropTypeId;
+    this.listJsForm.controls["cropTypeId"].setValue(data?.cropTypeName);
+    // this.modalService.dismissAll();
   }
 
   // The master checkbox will check/ uncheck all items
@@ -206,16 +234,19 @@ export class CropListjsComponent {
     var listData = this.ListJsDatas.filter(
       (data: { id: any }) => data.id === id
     );
-    this.listJsForm.controls["crop_name"].setValue(listData[0]?.crop_name);
+    this.listJsForm.controls["cropTypeId"].setValue(listData[0]?.crop_name);
+    this.listJsForm.controls["masterCrop_name"].setValue(
+      listData[0]?.masterCrop_name
+    );
     this.listJsForm.controls["description"].setValue(listData[0]?.description);
     this.listJsForm.controls["ids"].setValue(listData[0]?.id);
   }
 
-  saveCrop(payload:any): void {
+  saveCrop(payload: any): void {
     this.service.cropTypeAdd().subscribe(
       (res: any) => {
         console.log("res", res);
-        this.getCropType();
+        this.getMasterCropType();
       },
       (err) => {
         console.log("err", err);
@@ -223,11 +254,11 @@ export class CropListjsComponent {
     );
   }
 
-  UpdateCrop(payload:any): void {
+  UpdateCrop(payload: any): void {
     this.service.cropTypeUpdate().subscribe(
       (res: any) => {
         console.log("res", res);
-        this.getCropType();
+        this.getMasterCropType();
       },
       (err) => {
         console.log("err", err);

@@ -25,6 +25,7 @@
       "TEXT": "Apps",
       "LIST": {
         "CROPTYPE":"Crop Type",
+        "MASTERCROP":"Master Crop",
         "CALENDAR": "Calendar",
         "CHAT": "Chat",
         "EMAIL": "Email",

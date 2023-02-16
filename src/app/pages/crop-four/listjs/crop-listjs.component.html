@@ -120,7 +120,7 @@
 <!-- Add ListJs Data -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header bg-light p-3">
-    <h5 class="modal-title" id="exampleModalLabel">Add Crop Type</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Add Master Crop</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
       (click)="modal.dismiss('Cross click')"></button>
   </div>
@@ -135,8 +135,16 @@
       <div class="mb-3">
         <label for="customername-field" class="form-label">Crop Name</label>
         <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="crop_name" [ngClass]="{ 'is-invalid': submitted && form['crop_name'].errors }" />
+          formControlName="cropTypeId" [ngClass]="{ 'is-invalid': submitted && form['cropTypeId'].errors }"
+          (click)="openIrrigationTypePopup(irrigationType)" />
         <div class="invalid-feedback">Please enter a crop name.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Master Crop Name</label>
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
+          formControlName="masterCrop_name" [ngClass]="{ 'is-invalid': submitted && form['masterCrop_name'].errors }" />
+        <div class="invalid-feedback">Please enter a master crop name.</div>
       </div>
 
       <div class="mb-3">
@@ -156,6 +164,50 @@
     </div>
   </form>
 </ng-template>
+
+<!-- Start crop type modal  -->
+<ng-template #irrigationType role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Irrigation Type</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Irrigation Name</th>
+            <th>Irrigation Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of irrigationTypeList; let i= index;" id="lj_{{ data.id }}">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.irrigationTypeName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm" (click)="cropTypeAdd(data); modal.dismiss('Cross click')">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End crop type modal -->
 
 <!-- removeItemModal -->
 <ng-template #deleteModel let-modal>
