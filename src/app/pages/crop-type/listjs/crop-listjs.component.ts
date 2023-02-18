@@ -114,24 +114,30 @@ export class CropListjsComponent {
    * Save saveListJs
    */
   saveListJs() {
-    if (this.listJsForm.valid) {
-      if (this.listJsForm.get("ids")?.value) {
-        this.ListJsDatas = this.ListJsDatas.map((data: { id: any }) =>
-          data.id === this.listJsForm.get("ids")?.value
-            ? { ...data, ...this.listJsForm.value }
-            : data
-        );
-      } else {
-        const crop_name = this.listJsForm.get("crop_name")?.value;
-        const description = this.listJsForm.get("description")?.value;
-        // this.ListJsDatas.push({
-        //   crop_name,
-        //   description,
-        // });
-        this.modalService.dismissAll();
-      }
+    if (!this.listJsForm.valid) {
+      return;
+      // if (this.listJsForm.get("ids")?.value) {
+      //   this.ListJsDatas = this.ListJsDatas.map((data: { id: any }) =>
+      //     data.id === this.listJsForm.get("ids")?.value
+      //       ? { ...data, ...this.listJsForm.value }
+      //       : data
+      //   );
+      // }
+    } else {
+      // const crop_name = this.listJsForm.get("crop_name")?.value;
+      // const description = this.listJsForm.get("description")?.value;
+      // this.ListJsDatas.push({
+      //   crop_name,
+      //   description,
+      // });
+      let formData = this.listJsForm.value;
+      let payload = {
+        CropTypeName: formData.crop_name,
+        Description: formData.description,
+      };
+      console.log("payload", payload);
+      this.saveCrop(payload);
     }
-    this.modalService.dismissAll();
     setTimeout(() => {
       this.listJsForm.reset();
     }, 2000);
@@ -181,13 +187,18 @@ export class CropListjsComponent {
 
   // Delete Data
   deleteData(id: any) {
-    if (id) {
-      document.getElementById("lj_" + id)?.remove();
-    } else {
-      this.checkedValGet.forEach((item: any) => {
-        document.getElementById("lj_" + item)?.remove();
-      });
-    }
+    let payload = {
+      cropTypeId: this.deleteId,
+    };
+    this.deleteCrop(payload);
+    // if (id) {
+    //   document.getElementById("lj_" + id)?.remove();
+
+    // } else {
+    //   this.checkedValGet.forEach((item: any) => {
+    //     document.getElementById("lj_" + item)?.remove();
+    //   });
+    // }
   }
 
   /**
@@ -203,16 +214,35 @@ export class CropListjsComponent {
     ) as HTMLAreaElement;
     headingText.innerHTML = "Edit Crop Type";
     updateBtn.innerHTML = "Update";
+    // var listData;
+    // this.listItems.forEach((data) => {
+    //   if (data.id === id) listData = data;
+    // });
     var listData = this.ListJsDatas.filter(
       (data: { id: any }) => data.id === id
     );
-    this.listJsForm.controls["crop_name"].setValue(listData[0]?.crop_name);
-    this.listJsForm.controls["description"].setValue(listData[0]?.description);
-    this.listJsForm.controls["ids"].setValue(listData[0]?.id);
+    console.log("listData", listData);
+
+    // this.listJsForm.controls["crop_name"].setValue(listData[0]?.crop_name);
+    // this.listJsForm.controls["description"].setValue(listData[0]?.description);
+    // this.listJsForm.controls["ids"].setValue(listData[0]?.id);
   }
 
-  saveCrop(payload:any): void {
-    this.service.cropTypeAdd().subscribe(
+  saveCrop(payload: any): void {
+    this.service.cropTypeAdd(payload).subscribe(
+      (res: any) => {
+        console.log("res", res);
+        this.modalService.dismissAll();
+        this.getCropType();
+      },
+      (err) => {
+        console.log("err", err);
+      }
+    );
+  }
+
+  UpdateCrop(payload: any): void {
+    this.service.cropTypeUpdate(payload).subscribe(
       (res: any) => {
         console.log("res", res);
         this.getCropType();
@@ -223,8 +253,8 @@ export class CropListjsComponent {
     );
   }
 
-  UpdateCrop(payload:any): void {
-    this.service.cropTypeUpdate().subscribe(
+  deleteCrop(payload: any): void {
+    this.service.cropTypeDelete(payload).subscribe(
       (res: any) => {
         console.log("res", res);
         this.getCropType();
