@@ -6,7 +6,7 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+        <h4 class="card-title mb-0">Master Crop</h4>
       </div>
       <!-- end card header -->
 
@@ -44,8 +44,8 @@
                     </div>
                   </th>
                   <th class="sort" data-sort="masterCrop">Id</th>
-                  <th class="sort" data-sort="date">Crop Name</th>
-                  <th class="sort" data-sort="status">Crop Description</th>
+                  <th class="sort" data-sort="date">Master Crop Name</th>
+                  <th class="sort" data-sort="status">Master Crop Description</th>
                   <th class="sort">Action</th>
                 </tr>
               </thead>
@@ -58,13 +58,13 @@
                     </div>
                   </th>
                   <td>
-                    <ngb-highlight [result]="data.cropTypeId"></ngb-highlight>
+                    <ngb-highlight [result]="data.masterCropID"></ngb-highlight>
                   </td>
                   <td>
-                    <ngb-highlight [result]="data.cropTypeName" [term]="service.searchTerm"></ngb-highlight>
+                    <ngb-highlight [result]="data.masterCropName" [term]="service.searchTerm"></ngb-highlight>
                   </td>
                   <td>
-                    <ngb-highlight [result]="data.description" [term]="service.searchTerm"></ngb-highlight>
+                    <ngb-highlight [result]="data.masterCropDescription" [term]="service.searchTerm"></ngb-highlight>
                   </td>
 
                   <td>

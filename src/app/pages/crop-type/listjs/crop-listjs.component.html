@@ -6,7 +6,7 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title mb-0">Add, Edit & Remove</h4>
+        <h4 class="card-title mb-0">Crop Type</h4>
       </div>
       <!-- end card header -->
 
@@ -26,7 +26,7 @@
             <div class="col-sm">
               <div class="d-flex justify-content-sm-end">
                 <div class="search-box ms-2">
-                  <input type="text" class="form-control search" placeholder="Search..." />
+                  <input type="text" class="form-control search" placeholder="Search..." #search />
                   <i class="ri-search-line search-icon"></i>
                 </div>
               </div>
@@ -70,12 +70,12 @@
                   <td>
                     <div class="d-flex gap-2">
                       <div class="edit">
-                        <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.id)">
+                        <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.cropTypeId)">
                           Edit
                         </button>
                       </div>
                       <div class="remove">
-                        <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.id)">
+                        <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.cropTypeId)">
                           Remove
                         </button>
                       </div>

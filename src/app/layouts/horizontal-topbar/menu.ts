@@ -60,22 +60,41 @@ export const MENU: MenuItem[] = [
     ]
   },
   {
-    id: 8,
-    label: 'MENUITEMS.APPS.TEXT',
-    icon: 'ri-apps-2-line',
+    id: 3,
+    label: 'MENUITEMS.MASTER.TEXT',
+    icon: 'ri-pages-line',
     subItems: [
       {
         id: 200,
-        label: 'MENUITEMS.APPS.LIST.CROPTYPE',
+        label: 'MENUITEMS.MASTER.LIST.CROPTYPE',
         link: '/crop/crop-type-listjs',
         parentId: 8
       },
       {
         id: 201,
-        label: 'MENUITEMS.APPS.LIST.MASTERCROP',
+        label: 'MENUITEMS.MASTER.LIST.MASTERCROP',
         link: '/master-crop/master-crop-listjs',
         parentId: 8
       },
+    ]
+  },
+  {
+    id: 8,
+    label: 'MENUITEMS.APPS.TEXT',
+    icon: 'ri-apps-2-line',
+    subItems: [
+      // {
+      //   id: 200,
+      //   label: 'MENUITEMS.APPS.LIST.CROPTYPE',
+      //   link: '/crop/crop-type-listjs',
+      //   parentId: 8
+      // },
+      // {
+      //   id: 201,
+      //   label: 'MENUITEMS.APPS.LIST.MASTERCROP',
+      //   link: '/master-crop/master-crop-listjs',
+      //   parentId: 8
+      // },
       {
         id: 9,
         label: 'MENUITEMS.APPS.LIST.CALENDAR',

@@ -7,7 +7,10 @@ import { MasterCrop, CropListJsModel } from "./crop-listjs.model";
 import { ListJs } from "./data";
 import { DecimalPipe } from "@angular/common";
 import { debounceTime, delay, switchMap, tap } from "rxjs/operators";
-import { SortColumn, SortDirection } from "./master-crop-listjs-sortable.directive";
+import {
+  SortColumn,
+  SortDirection,
+} from "./master-crop-listjs-sortable.directive";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 interface SearchResult {
@@ -93,7 +96,7 @@ export class CropService {
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.get(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetCropTypeList?displayStart=0&displayLength=10&SearchCropType=null`,
+      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetMasterCropList?displayLength=10&displayStart=0&SearchCropType=null&SearchMasterCropName=null`,
       { headers: headers }
     );
   }
