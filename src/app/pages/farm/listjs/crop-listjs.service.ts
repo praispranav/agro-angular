@@ -182,6 +182,18 @@ export class CropService {
     return of({ countries, total });
   }
 
+  farmTypeList(){
+    let headers = new HttpHeaders();
+    headers = headers.set(
+      "Authorization",
+      "Bearer " + localStorage.getItem("token")
+    );
+    return this.http.get(
+      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetFarmDetailList_Paging?displayLength=10&displayStart=0`,
+      { headers: headers }
+    );
+  }
+
   farmAdd(payload: any) {
     let headers = new HttpHeaders();
     headers = headers.set(

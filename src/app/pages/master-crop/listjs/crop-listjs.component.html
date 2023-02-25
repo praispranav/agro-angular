@@ -64,14 +64,14 @@
                   <td>
                     <div class="d-flex gap-2">
                       <div class="edit ms-3">
-                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.cropTypeId)"></i>
+                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.masterCropID)"></i>
                         <!-- <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.id)">
                           Edit
                         </button> -->
                       </div>
                       <div class="remove me-3">
                         <i class="ri-delete-bin-fill cursor text-muted"
-                          (click)="confirm(deleteModel,data.cropTypeId)"></i>
+                          (click)="confirm(deleteModel,data.masterCropID)"></i>
                         <!-- <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.id)">
                           Remove
                         </button> -->
@@ -122,38 +122,36 @@
   </div>
   <form (ngSubmit)="saveListJs()" [formGroup]="listJsForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-      <input type="hidden" name="id" value="" formControlName="ids" />
-      <div class="mb-3" id="modal-id" style="display: none;">
-        <label for="id-field" class="form-label">ID</label>
-        <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
-      </div>
-
       <div class="mb-3">
         <label for="customername-field" class="form-label">Crop Name</label>
-        <!-- <select class="form-control form-select" formControlName="cropTypeId" (click)="openCropTypePopup(cropType)"
-          [ngClass]="{ 'is-invalid': submitted && form['cropTypeId'].errors }">
-          <option [value]="cropTypeId"></option>
-
-        </select> -->
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="cropTypeId" [ngClass]="{ 'is-invalid': submitted && form['cropTypeId'].errors }"
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Crop Name" required
+          formControlName="CropTypeId" [ngClass]="{ 'is-invalid': submitted && form['CropTypeId'].errors }"
           (click)="openCropTypePopup(cropType)" />
+        <i class="bx bx-chevron-down dropdown"></i>
         <div class="invalid-feedback">Please enter a crop name.</div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Master Crop Name</label>
         <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="masterCrop_name" [ngClass]="{ 'is-invalid': submitted && form['masterCrop_name'].errors }" />
+          formControlName="MasterCropName" [ngClass]="{ 'is-invalid': submitted && form['MasterCropName'].errors }" />
         <div class="invalid-feedback">Please enter a master crop name.</div>
       </div>
 
       <div class="mb-3">
         <label for="email-field" class="form-label">Description</label>
         <textarea id="email-field" class="form-control" placeholder="Enter Crop Description" required
-          formControlName="description" [ngClass]="{ 'is-invalid': submitted && form['description'].errors }">
+          formControlName="Description" [ngClass]="{ 'is-invalid': submitted && form['Description'].errors }">
                 </textarea>
         <div class="invalid-feedback">Please enter description.</div>
+      </div>
+
+      <!-- <div class="mb-3">
+        <label for="customername-field" class="form-label">Farm Profile Image</label>
+        <input type="file" accept="image/*" class="form-control" formControlName="MasterCropProfileImageBase64" (change)="selectFile($event)"/>
+      </div> -->
+      <div class="mb-3">
+        <dropzone class="dropzone_sec" (change)="selectFile($event)"></dropzone>
       </div>
     </div>
     <div class="modal-footer">
@@ -178,7 +176,7 @@
       <table class="table">
         <thead>
           <tr class="bg-light text-muted">
-            <th>#</th>
+            <th>Sr No</th>
             <th>Crop Type Name</th>
             <th>Crop Description</th>
             <th>Action</th>
@@ -197,8 +195,8 @@
             </td>
             <td>
               <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-primary" (click)="cropTypeAdd(data); modal.dismiss('Cross click')">
-                  Select
+                <button class="btn btn-outline-success" (click)="cropTypeAdd(data); modal.dismiss('Cross click')">
+                  <i class="ri-check-double-line"></i>
                 </button>
               </div>
             </td>

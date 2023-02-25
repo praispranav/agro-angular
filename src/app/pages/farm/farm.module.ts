@@ -20,7 +20,7 @@ import { FarmRoutingModule } from "./farm-routing.module";
 import { SharedModule } from "../../shared/shared.module";
 
 import { CropListjsComponent } from "./listjs/crop-listjs.component";
-
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
 // Sorting page
 //import { NgbdGridJsSortableHeader } from './../tables/gridjs/gridjs-sortable.directive';
 
@@ -40,6 +40,7 @@ import { CropListjsComponent } from "./listjs/crop-listjs.component";
     FlatpickrModule,
     FarmRoutingModule,
     SharedModule,
+    DropzoneModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

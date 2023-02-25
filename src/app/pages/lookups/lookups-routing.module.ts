@@ -8,7 +8,7 @@ import { CropListjsComponent } from "./listjs/crop-listjs.component";
 const routes: Routes = [
  
   {
-    path: "crop-two-listjs",
+    path: "list",
     component: CropListjsComponent
   }
 ];
@@ -18,4 +18,4 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 
-export class CropTwoRoutingModule { }
+export class LookupsRoutingModule { }

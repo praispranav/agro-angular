@@ -51,7 +51,7 @@
                   <td>
                     <div class="d-flex gap-2">
                       <div class="edit ms-3">
-                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data)"></i>
+                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.farmID)"></i>
                         <!-- <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data)">
                           Edit
                         </button> -->
@@ -109,10 +109,13 @@
   </div>
   <form (ngSubmit)="saveListJs()" [formGroup]="listJsForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-      <div class="mb-3" id="modal-id" style="display: none;">
+
+      <div class="mb-3">
         <label for="id-field" class="form-label">Farm Type</label>
         <input type="text" id="id-field" class="form-control" required placeholder="Farm Type"
-          formControlName="FarmTypeID" [ngClass]="{ 'is-invalid': submitted && form['FarmTypeID'].errors }" />
+          formControlName="FarmTypeID" [ngClass]="{ 'is-invalid': submitted && form['FarmTypeID'].errors }"
+          (click)="openFarmTypePopup(farmType)" />
+        <i class="bx bx-chevron-down dropdown"></i>
         <div class="invalid-feedback">Please enter a farm type.</div>
       </div>
 
@@ -159,7 +162,6 @@
         <div class="invalid-feedback">Please enter a phone number.</div>
       </div>
 
-
       <div class="mb-3">
         <label for="customername-field" class="form-label">Email</label>
         <input type="text" id="customername-field" class="form-control" placeholder="Enter Email" required
@@ -174,6 +176,15 @@
           <option *ngFor="let item of AreaMeasurementList" [value]="item">{{item}}</option>
         </select>
         <div class="invalid-feedback">Please enter a area size measurement.</div>
+      </div>
+
+      <!-- <div class="mb-3">
+        <label for="customername-field" class="form-label">Farm Profile Image</label>
+        <input type="file" accept="image/*" class="form-control" formControlName="FarmProfileImageBase64" (change)="selectFile($event)"/>
+      </div> -->
+
+      <div class="mb-3">
+        <dropzone class="dropzone_sec" (change)="selectFile($event)"></dropzone>
       </div>
 
     </div>
@@ -213,3 +224,47 @@
     </div>
   </div><!-- /.modal-content -->
 </ng-template>
+
+<!-- Start farm type modal  -->
+<ng-template #farmType role="document" let-modal>
+  <div class="modal-header bg-light p-3">
+    <h5 class="modal-title" id="exampleModalLabel">Farm Type</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>Sr No</th>
+            <th>Farm Type Name</th>
+            <th>Farm Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of farmTypeList; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.cropTypeName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-success" (click)="farmTypeAdd(data); modal.dismiss('Cross click')">
+                  <i class="ri-check-double-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End crop type modal -->

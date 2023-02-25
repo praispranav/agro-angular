@@ -19,6 +19,7 @@ import {
   NgbdOrdersSortableHeader,
   SortEvent,
 } from "./master-crop-listjs-sortable.directive";
+import { MasterCropTypeInterface } from "./master-crop-type.interface";
 
 @Component({
   selector: "app-master-crop-listjs",
@@ -42,6 +43,9 @@ export class CropListjsComponent {
   masterSelected!: boolean;
   cropTypeList: any;
   cropTypeId!: string;
+  cropTypeData: any;
+  payload!: MasterCropTypeInterface;
+  imageBase64: any;
 
   // Table data
   ListJsList!: Observable<CropListJsModel[]>;
@@ -72,10 +76,10 @@ export class CropListjsComponent {
      * Form Validation
      */
     this.listJsForm = this.formBuilder.group({
-      ids: [""],
-      cropTypeId: ["", [Validators.required]],
-      masterCrop_name: ["", [Validators.required]],
-      description: ["", [Validators.required]],
+      CropTypeId: ["", [Validators.required]],
+      MasterCropName: ["", [Validators.required]],
+      Description: ["", [Validators.required]],
+      MasterCropProfileImageBase64: [""],
     });
 
     /**
@@ -106,6 +110,17 @@ export class CropListjsComponent {
         console.log("err", err);
       }
     );
+  }
+
+  selectFile(event: any): void {
+    console.log("event", event.target.files);
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      console.log("event", e);
+      this.imageBase64 = e.target.result;
+      console.log("imageBase64", this.imageBase64);
+    };
   }
   /**
    * Open modal
@@ -141,19 +156,31 @@ export class CropListjsComponent {
             : data
         );
       } else {
-        this.listJsForm.controls["cropTypeId"].setValue(this.cropTypeId);
-        // const masterCrop_name = this.listJsForm.get("masterCrop_name")?.value;
-        // const description = this.listJsForm.get("description")?.value;
+        if (this.cropTypeData.masterCropID) {
+          this.listJsForm.controls["CropTypeId"].setValue(
+            this.cropTypeData.cropTypeId
+          );
+        } else {
+          this.listJsForm.controls["CropTypeId"].setValue(this.cropTypeId);
+        }
         let formData = this.listJsForm.value;
-        console.log("formData", formData);
-        // this.ListJsDatas.push({
-        //   crop_name,
-        //   description,
-        // });
-        this.modalService.dismissAll();
+        this.payload = {
+          CropTypeId: formData.CropTypeId,
+          MasterCropName: formData.MasterCropName,
+          Description: formData.Description,
+          MasterCropProfileImageBase64: this.imageBase64
+            ? this.imageBase64
+            : null,
+        };
+        console.log("payload", this.payload);
+        if (this.cropTypeData?.masterCropID) {
+          this.payload.MasterCropID = this.cropTypeData?.masterCropID;
+          this.UpdateCrop(this.payload);
+        } else {
+          this.saveCrop(this.payload);
+        }
       }
     }
-    this.modalService.dismissAll();
     setTimeout(() => {
       this.listJsForm.reset();
     }, 2000);
@@ -162,60 +189,22 @@ export class CropListjsComponent {
 
   cropTypeAdd(data: any): void {
     this.cropTypeId = data.cropTypeId;
-    this.listJsForm.controls["cropTypeId"].setValue(data?.cropTypeName);
+    this.listJsForm.controls["CropTypeId"].setValue(data?.cropTypeName);
     // this.modalService.dismissAll();
   }
 
-  // The master checkbox will check/ uncheck all items
-  checkUncheckAll(ev: any) {
-    this.ListJsDatas.forEach(
-      (x: { state: any }) => (x.state = ev.target.checked)
-    );
-  }
-
-  /**
-   * Confirmation mail model
-   */
   deleteId: any;
   confirm(content: any, id: any) {
     this.deleteId = id;
     this.modalService.open(content, { centered: true });
   }
 
-  /**
-   * Multiple Delete
-   */
-  checkedValGet: any[] = [];
-  deleteMultiple(content: any) {
-    var checkboxes: any = document.getElementsByName("checkAll");
-    var result;
-    var checkedVal: any[] = [];
-    for (var i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].checked) {
-        result = checkboxes[i].value;
-        checkedVal.push(result);
-      }
-    }
-    if (checkedVal.length > 0) {
-      this.modalService.open(content, { centered: true });
-    } else {
-      Swal.fire({
-        text: "Please select at least one checkbox",
-        confirmButtonColor: "#299cdb",
-      });
-    }
-    this.checkedValGet = checkedVal;
-  }
-
   // Delete Data
   deleteData(id: any) {
-    if (id) {
-      document.getElementById("lj_" + id)?.remove();
-    } else {
-      this.checkedValGet.forEach((item: any) => {
-        document.getElementById("lj_" + item)?.remove();
-      });
-    }
+    let payload = {
+      MasterCropID: this.deleteId,
+    };
+    this.deleteCrop(payload);
   }
 
   /**
@@ -224,6 +213,27 @@ export class CropListjsComponent {
    */
   editModal(content: any, id: any) {
     this.submitted = false;
+    this.listItems.forEach((element) => {
+      if (id === element.masterCropID) {
+        this.cropTypeData = element;
+      }
+    });
+    console.log("cropTypeData", this.cropTypeData);
+    this.listJsForm.controls["CropTypeId"].setValue(
+      this.cropTypeData.cropTypeName
+    );
+    this.listJsForm.patchValue({
+      MasterCropName: this.cropTypeData?.masterCropName
+        ? this.cropTypeData?.masterCropName
+        : "",
+      Description: this.cropTypeData?.masterCropDescription
+        ? this.cropTypeData?.masterCropDescription
+        : "",
+      MasterCropProfileImageBase64: this.cropTypeData
+        ?.masterCropProfilePicURL
+        ? this.cropTypeData?.masterCropProfilePicURL
+        : "",
+    });
     this.modalService.open(content, { size: "md", centered: true });
     var updateBtn = document.getElementById("add-btn") as HTMLAreaElement;
     var headingText = document.getElementById(
@@ -231,21 +241,23 @@ export class CropListjsComponent {
     ) as HTMLAreaElement;
     headingText.innerHTML = "Edit Crop Type";
     updateBtn.innerHTML = "Update";
-    var listData = this.ListJsDatas.filter(
-      (data: { id: any }) => data.id === id
-    );
-    this.listJsForm.controls["cropTypeId"].setValue(listData[0]?.crop_name);
-    this.listJsForm.controls["masterCrop_name"].setValue(
-      listData[0]?.masterCrop_name
-    );
-    this.listJsForm.controls["description"].setValue(listData[0]?.description);
-    this.listJsForm.controls["ids"].setValue(listData[0]?.id);
   }
 
   saveCrop(payload: any): void {
-    this.service.cropTypeAdd().subscribe(
+    this.service.masterCropTypeAdd(payload).subscribe(
       (res: any) => {
-        console.log("res", res);
+        this.modalService.dismissAll();
+        this.getMasterCropType();
+      },
+      (err) => {
+        console.log("err", err);
+      }
+    );
+  }
+
+  deleteCrop(payload: any): void {
+    this.service.masterCropTypeDelete(payload).subscribe(
+      (res: any) => {
         this.getMasterCropType();
       },
       (err) => {
@@ -255,9 +267,9 @@ export class CropListjsComponent {
   }
 
   UpdateCrop(payload: any): void {
-    this.service.cropTypeUpdate().subscribe(
+    this.service.masterCropTypeUpdate(payload).subscribe(
       (res: any) => {
-        console.log("res", res);
+        this.modalService.dismissAll();
         this.getMasterCropType();
       },
       (err) => {

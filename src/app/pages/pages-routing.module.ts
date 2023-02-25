@@ -111,33 +111,13 @@ const routes: Routes = [
       ),
   },
   {
-    path: "crop-one",
-    loadChildren: () =>
-      import("./crop-one/crop-one.module").then((m) => m.CropOneModule),
-  },
-  {
-    path: "crop-two",
-    loadChildren: () =>
-      import("./crop-two/crop-two.module").then((m) => m.CropTwoModule),
-  },
-  {
-    path: "crop-three",
-    loadChildren: () =>
-      import("./crop-three/crop-three.module").then((m) => m.CropThreeModule),
-  },
-  {
-    path: "crop-four",
-    loadChildren: () =>
-      import("./crop-four/crop-four.module").then((m) => m.CropFourModule),
-  },
-  {
-    path: "crop-five",
-    loadChildren: () =>
-      import("./crop-five/crop-five.module").then((m) => m.CropFiveModule),
-  },
-  {
     path: "farm",
     loadChildren: () => import("./farm/farm.module").then((m) => m.FarmModule),
+  },
+  {
+    path: "lookups",
+    loadChildren: () =>
+      import("./lookups/lookups.module").then((m) => m.LookupsModule),
   },
 ];
 

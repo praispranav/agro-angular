@@ -61,6 +61,12 @@ export const MENU: MenuItem[] = [
         link: '/farm/farm-list',
         parentId: 8
       },
+      {
+        id: 203,
+        label: 'MENUITEMS.APPS.LIST.LOOKUPS',
+        link: '/lookups/list',
+        parentId: 8
+      },
       // {
       //   id: 9,
       //   label: 'MENUITEMS.APPS.LIST.LOOKUPS',
