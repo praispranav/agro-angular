@@ -8,7 +8,7 @@ export interface CropListJsModel {
   status_color: string;
   isSelected?:any;
 }
-export class MasterCrop {
+export class CropType {
   cropTypeId?: number;
   cropTypeDescription?: string;
   cropTypeName?: string;

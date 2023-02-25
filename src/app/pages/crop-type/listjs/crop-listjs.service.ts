@@ -68,7 +68,7 @@ export class CropService {
     sortColumn: "",
     sortDirection: "",
     startIndex: 0,
-    endIndex: 9,
+    endIndex: 10,
     totalRecords: 0,
   };
 

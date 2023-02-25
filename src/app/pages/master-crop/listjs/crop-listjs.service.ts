@@ -185,14 +185,15 @@ export class CropService {
     return of({ countries, total });
   }
 
-  cropTypeAdd() {
+  masterCropTypeAdd(payload:any) {
     let headers = new HttpHeaders();
     headers = headers.set(
       "Authorization",
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.post(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetCropTypeList?displayStart=0&displayLength=10&SearchCropType=null`,
+      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/CreateMasterCrop`,
+      payload,
       { headers: headers }
     );
   }
@@ -209,26 +210,28 @@ export class CropService {
     );
   }
 
-  cropTypeUpdate() {
+  masterCropTypeUpdate(payload:any) {
     let headers = new HttpHeaders();
     headers = headers.set(
       "Authorization",
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.post(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetCropTypeList?displayStart=0&displayLength=10&SearchCropType=null`,
+      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/UpdateMasterCrop`,
+      payload,
       { headers: headers }
     );
   }
 
-  cropTypeDelete() {
+  masterCropTypeDelete(payload:any) {
     let headers = new HttpHeaders();
     headers = headers.set(
       "Authorization",
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.post(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetCropTypeList?displayStart=0&displayLength=10&SearchCropType=null`,
+      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/DeleteMasterCrop`,
+      payload,
       { headers: headers }
     );
   }

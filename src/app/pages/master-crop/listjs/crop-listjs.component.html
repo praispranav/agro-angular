@@ -5,60 +5,54 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header d-flex align-items-center justify-content-between">
         <h4 class="card-title mb-0">Master Crop</h4>
+        <div class="d-flex">
+          <div class="search-box ms-2">
+            <input type="text" class="form-control search" placeholder="Search..." #search />
+            <i class="ri-search-line search-icon"></i>
+          </div>
+
+          <button type="button" class="btn btn-primary add-btn mx-3">
+            <i class="ri-file-3-fill align-bottom me-1"></i> Export
+          </button>
+
+          <button type="button" class="btn btn-success add-btn" id="create-btn" (click)="openModal(content)">
+            <i class="ri-add-line align-bottom me-1"></i> Add
+          </button>
+        </div>
       </div>
       <!-- end card header -->
 
       <div class="card-body">
         <div id="customerList">
-          <div class="row g-4 mb-3">
-            <div class="col-sm-auto">
-              <div class="d-flex gap-1">
-                <button type="button" class="btn btn-success add-btn" id="create-btn" (click)="openModal(content)">
-                  <i class="ri-add-line align-bottom me-1"></i> Add
-                </button>
-                <button class="btn btn-soft-danger">
-                  <i class="ri-delete-bin-2-line"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-sm">
-              <div class="d-flex justify-content-sm-end">
-                <div class="search-box ms-2">
-                  <input type="text" class="form-control search" placeholder="Search..." />
-                  <i class="ri-search-line search-icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="table-responsive table-card mt-3 mb-1">
+          <div class="table-responsive table-card mb-1">
             <table class="table">
               <thead>
                 <tr class="bg-light text-muted">
-                  <th scope="col" style="width: 50px">
+                  <!-- <th scope="col" style="width: 50px">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="checkAll" value="option"
                         [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                     </div>
-                  </th>
-                  <th class="sort" data-sort="masterCrop">Id</th>
+                  </th> -->
+                  <th class="sort" data-sort="masterCrop">Sr No</th>
                   <th class="sort" data-sort="date">Master Crop Name</th>
                   <th class="sort" data-sort="status">Master Crop Description</th>
                   <th class="sort">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of listItems" id="lj_{{ data.id }}">
-                  <th scope="row">
+                <tr *ngFor="let data of listItems; let i=index">
+                  <!-- <th scope="row">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" name="checkAll" value="{{ data.id }}"
                         [(ngModel)]="data.state" />
                     </div>
-                  </th>
+                  </th> -->
                   <td>
-                    <ngb-highlight [result]="data.masterCropID"></ngb-highlight>
+                    {{i+1}}
                   </td>
                   <td>
                     <ngb-highlight [result]="data.masterCropName" [term]="service.searchTerm"></ngb-highlight>
@@ -69,15 +63,18 @@
 
                   <td>
                     <div class="d-flex gap-2">
-                      <div class="edit">
-                        <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.id)">
+                      <div class="edit ms-3">
+                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.masterCropID)"></i>
+                        <!-- <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.id)">
                           Edit
-                        </button>
+                        </button> -->
                       </div>
-                      <div class="remove">
-                        <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.id)">
+                      <div class="remove me-3">
+                        <i class="ri-delete-bin-fill cursor text-muted"
+                          (click)="confirm(deleteModel,data.masterCropID)"></i>
+                        <!-- <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.id)">
                           Remove
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </td>
@@ -90,20 +87,19 @@
             <div class="col col-sm-6">
               <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                 Showing
-                {{ service.startIndex }} to {{ service.endIndex }} of
-                {{ service.totalRecords }}
+                {{ service.page }} to {{ service.pageSize }} of
+                {{ listItems[0]?.totalCount }}
                 entries
               </div>
             </div>
             <!-- Pagination -->
             <!-- <div class="col col-sm-6">
-                            <div class="text-sm-right float-sm-end listjs-pagination">
-                                <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page"
-                                   >
-                                   [pageSize]="service.pageSize"
-                                </ngb-pagination>
-                            </div>
-                        </div> -->
+              <div class="text-sm-right float-sm-end listjs-pagination">
+                <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page">
+                  [pageSize]="service.pageSize"
+                </ngb-pagination>
+              </div>
+            </div> -->
             <!-- End Pagination -->
           </div>
         </div>
@@ -126,33 +122,36 @@
   </div>
   <form (ngSubmit)="saveListJs()" [formGroup]="listJsForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-      <input type="hidden" name="id" value="" formControlName="ids" />
-      <div class="mb-3" id="modal-id" style="display: none;">
-        <label for="id-field" class="form-label">ID</label>
-        <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
-      </div>
-
       <div class="mb-3">
         <label for="customername-field" class="form-label">Crop Name</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="cropTypeId" [ngClass]="{ 'is-invalid': submitted && form['cropTypeId'].errors }"
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Crop Name" required
+          formControlName="CropTypeId" [ngClass]="{ 'is-invalid': submitted && form['CropTypeId'].errors }"
           (click)="openCropTypePopup(cropType)" />
+        <i class="bx bx-chevron-down dropdown"></i>
         <div class="invalid-feedback">Please enter a crop name.</div>
       </div>
 
       <div class="mb-3">
         <label for="customername-field" class="form-label">Master Crop Name</label>
         <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="masterCrop_name" [ngClass]="{ 'is-invalid': submitted && form['masterCrop_name'].errors }" />
+          formControlName="MasterCropName" [ngClass]="{ 'is-invalid': submitted && form['MasterCropName'].errors }" />
         <div class="invalid-feedback">Please enter a master crop name.</div>
       </div>
 
       <div class="mb-3">
         <label for="email-field" class="form-label">Description</label>
         <textarea id="email-field" class="form-control" placeholder="Enter Crop Description" required
-          formControlName="description" [ngClass]="{ 'is-invalid': submitted && form['description'].errors }">
+          formControlName="Description" [ngClass]="{ 'is-invalid': submitted && form['Description'].errors }">
                 </textarea>
         <div class="invalid-feedback">Please enter description.</div>
+      </div>
+
+      <!-- <div class="mb-3">
+        <label for="customername-field" class="form-label">Farm Profile Image</label>
+        <input type="file" accept="image/*" class="form-control" formControlName="MasterCropProfileImageBase64" (change)="selectFile($event)"/>
+      </div> -->
+      <div class="mb-3">
+        <dropzone class="dropzone_sec" (change)="selectFile($event)"></dropzone>
       </div>
     </div>
     <div class="modal-footer">
@@ -177,7 +176,7 @@
       <table class="table">
         <thead>
           <tr class="bg-light text-muted">
-            <th>#</th>
+            <th>Sr No</th>
             <th>Crop Type Name</th>
             <th>Crop Description</th>
             <th>Action</th>
@@ -196,8 +195,8 @@
             </td>
             <td>
               <div class="d-flex gap-2">
-                <button class="btn btn-sm" (click)="cropTypeAdd(data); modal.dismiss('Cross click')">
-                  Select
+                <button class="btn btn-outline-success" (click)="cropTypeAdd(data); modal.dismiss('Cross click')">
+                  <i class="ri-check-double-line"></i>
                 </button>
               </div>
             </td>

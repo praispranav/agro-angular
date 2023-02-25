@@ -16,11 +16,11 @@ import { defineElement } from "lord-icon-element";
 import lottie from "lottie-web";
 
 // Component pages
-import { CropFiveRoutingModule } from "./crop-five-routing.module";
+import { LookupsRoutingModule } from "./lookups-routing.module";
 import { SharedModule } from "../../shared/shared.module";
 
 import { CropListjsComponent } from "./listjs/crop-listjs.component";
-
+import { NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 // Sorting page
 //import { NgbdGridJsSortableHeader } from './../tables/gridjs/gridjs-sortable.directive';
 
@@ -38,12 +38,13 @@ import { CropListjsComponent } from "./listjs/crop-listjs.component";
     NgbPaginationModule,
     NgbTypeaheadModule,
     FlatpickrModule,
-    CropFiveRoutingModule,
+    LookupsRoutingModule,
     SharedModule,
+    NgbNavModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class CropFiveModule {
+export class LookupsModule {
   constructor() {
     defineElement(lottie.loadAnimation);
   }

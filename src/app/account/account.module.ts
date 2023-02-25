@@ -16,6 +16,8 @@ import { SigninModule } from "./auth/signin/signin.module";
 import { SignupModule } from "./auth/signup/signup.module";
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     NgbToastModule,
     AccountRoutingModule,
+    NgbCarouselModule,
     SigninModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

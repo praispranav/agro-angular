@@ -1,0 +1,304 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">Lookups</h4>
+      </div>
+
+      <div class="card-body">
+
+        <!-- Nav tabs -->
+        <ul ngbNav #Pills="ngbNav" [activeId]="1" class="nav nav-pills nav-success mb-3">
+          <li [ngbNavItem]="1" class="nav-item waves-effect waves-light" (click)="navClick('cropType')">
+            <a ngbNavLink>
+              Crop Type
+            </a>
+            <ng-template ngbNavContent>
+              <ng-template [ngTemplateOutlet]="cropType"></ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2" class="nav-item waves-effect waves-light" (click)="navClick('soilType')">
+            <a ngbNavLink>
+              <span class="d-sm-block">Soil Type</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-template [ngTemplateOutlet]="soilType"></ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3" class="nav-item waves-effect waves-light" (click)="navClick('varietyType')">
+            <a ngbNavLink>
+              <span class="d-sm-block">Variety Type</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-template [ngTemplateOutlet]="varietyType"></ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4" class="nav-item waves-effect waves-light" (click)="navClick('yieldType')">
+            <a ngbNavLink>
+              <span class="d-sm-block">Yield Type</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-template [ngTemplateOutlet]="yieldType"></ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="5" class="nav-item waves-effect waves-light" (click)="navClick('irrigationType')">
+            <a ngbNavLink>
+              <span class="d-sm-block">Irrigation Type</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-template [ngTemplateOutlet]="irrigationType"></ng-template>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="6" class="nav-item waves-effect waves-light" (click)="navClick('masterCropType')">
+            <a ngbNavLink>
+              <span class="d-sm-block">Master Crop Type</span>
+            </a>
+            <ng-template ngbNavContent>
+              <ng-template [ngTemplateOutlet]="masterCropType"></ng-template>
+            </ng-template>
+          </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content text-muted">
+          <div [ngbNavOutlet]="Pills"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Start crop type modal  -->
+<ng-template #cropType>
+  <div class="p-3">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Crop Type Name</th>
+            <th>Crop Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of list; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.cropTypeName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-primary">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End crop type modal -->
+
+<!-- Start soil type modal  -->
+<ng-template #soilType>
+  <div class="p-3">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Soil Name</th>
+            <th>Soil Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of list; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.soilTypeName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End soil type modal -->
+
+<!-- Start variety type modal  -->
+<ng-template #varietyType>
+  <div class="p-3">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Verity Name</th>
+            <th>Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of list; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.varietyName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End variety type modal -->
+
+<!-- Start Yield type modal  -->
+<ng-template #yieldType>
+  <div class="p-3">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Yield Name</th>
+            <th>Yield Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of list; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.yieldTypeName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End Yield type modal -->
+
+<!-- Start irrigation type modal  -->
+<ng-template #irrigationType>
+  <div class="p-3">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Irrigation Name</th>
+            <th>Irrigation Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of list; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.irrigationTypeName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.description"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End irrigation type modal -->
+
+<!-- Start master type modal  -->
+<ng-template #masterCropType>
+  <div class="p-3">
+    <div class="table-responsive table-card mt-3 mb-1">
+      <table class="table">
+        <thead>
+          <tr class="bg-light text-muted">
+            <th>#</th>
+            <th>Master Crop Name</th>
+            <th>Master Description</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of list; let i= index;">
+            <td>
+              {{i+1}}
+            </td>
+            <td>
+              <ngb-highlight [result]="data.masterCropName"></ngb-highlight>
+            </td>
+            <td>
+              <ngb-highlight [result]="data.masterCropDescription"></ngb-highlight>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <button class="btn btn-sm">
+                  Select
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+<!-- End master type modal -->
