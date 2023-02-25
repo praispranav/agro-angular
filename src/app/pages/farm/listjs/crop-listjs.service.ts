@@ -68,7 +68,7 @@ export class CropService {
     sortColumn: "",
     sortDirection: "",
     startIndex: 0,
-    endIndex: 10,
+    endIndex: 9,
     totalRecords: 0,
   };
 
@@ -93,7 +93,7 @@ export class CropService {
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.get(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetCropTypeList?displayLength=10&displayStart=0&SearchCropType=null`,
+      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetFarmDetailList_Paging?displayLength=10&displayStart=0`,
       { headers: headers }
     );
   }
@@ -182,40 +182,40 @@ export class CropService {
     return of({ countries, total });
   }
 
-  cropTypeAdd(payload: any) {
+  farmAdd(payload: any) {
     let headers = new HttpHeaders();
     headers = headers.set(
       "Authorization",
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.post(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/CreateCropType`,
+      `https://localhost:44335/api/AppSetting/CreateFarmDetail`,
       payload,
       { headers: headers }
     );
   }
 
-  cropTypeUpdate(payload: any) {
+  farmUpdate(payload: any) {
     let headers = new HttpHeaders();
     headers = headers.set(
       "Authorization",
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.post(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/UpdateCropType`,
+      `https://localhost:44335/api/AppSetting/UpdateFarmDetail`,
       payload,
       { headers: headers }
     );
   }
 
-  cropTypeDelete(payload: any) {
+  farmDelete(payload: any) {
     let headers = new HttpHeaders();
     headers = headers.set(
       "Authorization",
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.post(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/DeleteCropType`,
+      `https://localhost:44335/api/AppSetting/DeleteFarmDetail`,
       payload,
       { headers: headers }
     );

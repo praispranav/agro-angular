@@ -135,6 +135,10 @@ const routes: Routes = [
     loadChildren: () =>
       import("./crop-five/crop-five.module").then((m) => m.CropFiveModule),
   },
+  {
+    path: "farm",
+    loadChildren: () => import("./farm/farm.module").then((m) => m.FarmModule),
+  },
 ];
 
 @NgModule({

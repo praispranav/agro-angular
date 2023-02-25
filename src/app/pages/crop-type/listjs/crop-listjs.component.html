@@ -5,60 +5,56 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-      <div class="card-header">
+      <div class="card-header d-flex align-items-center justify-content-between">
         <h4 class="card-title mb-0">Crop Type</h4>
+
+        <div class="d-flex">
+          <div class="search-box ms-2">
+            <input type="text" class="form-control search" placeholder="Search..." #search />
+            <i class="ri-search-line search-icon"></i>
+          </div>
+
+          <button type="button" class="btn btn-primary add-btn mx-3">
+            <i class="ri-file-3-fill align-bottom me-1"></i> Export
+          </button>
+
+          <button type="button" class="btn btn-success add-btn" id="create-btn" (click)="openModal(content)">
+            <i class="ri-add-line align-bottom me-1"></i> Add
+          </button>
+        </div>
       </div>
       <!-- end card header -->
 
       <div class="card-body">
         <div id="customerList">
-          <div class="row g-4 mb-3">
-            <div class="col-sm-auto">
-              <div class="d-flex gap-1">
-                <button type="button" class="btn btn-success add-btn" id="create-btn" (click)="openModal(content)">
-                  <i class="ri-add-line align-bottom me-1"></i> Add
-                </button>
-                <button class="btn btn-soft-danger">
-                  <i class="ri-delete-bin-2-line"></i>
-                </button>
-              </div>
-            </div>
-            <div class="col-sm">
-              <div class="d-flex justify-content-sm-end">
-                <div class="search-box ms-2">
-                  <input type="text" class="form-control search" placeholder="Search..." #search />
-                  <i class="ri-search-line search-icon"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="table-responsive table-card mt-3 mb-1">
+          <div class="table-responsive table-card mb-1">
             <table class="table">
               <thead>
                 <tr class="bg-light text-muted">
-                  <th scope="col" style="width: 50px">
+                  <!-- <th scope="col" style="width: 50px">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" id="checkAll" value="option"
                         [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
                     </div>
-                  </th>
-                  <th class="sort" data-sort="masterCrop">Id</th>
+                  </th> -->
+                  <th class="sort" data-sort="masterCrop">Sr No</th>
                   <th class="sort" data-sort="date">Crop Name</th>
                   <th class="sort" data-sort="status">Crop Description</th>
                   <th class="sort">Action</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let data of listItems" id="lj_{{ data.id }}">
-                  <th scope="row">
+                <tr *ngFor="let data of listItems; let i=index">
+                  <!-- <th scope="row">
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" name="checkAll" value="{{ data.id }}"
                         [(ngModel)]="data.state" />
                     </div>
-                  </th>
+                  </th> -->
                   <td>
-                    <ngb-highlight [result]="data.cropTypeId"></ngb-highlight>
+                    <!-- <ngb-highlight [result]="data.cropTypeId"></ngb-highlight> -->
+                    {{i+1}}
                   </td>
                   <td>
                     <ngb-highlight [result]="data.cropTypeName" [term]="service.searchTerm"></ngb-highlight>
@@ -69,15 +65,19 @@
 
                   <td>
                     <div class="d-flex gap-2">
-                      <div class="edit">
-                        <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.cropTypeId)">
+                      <div class="edit ms-3">
+                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.cropTypeId)"></i>
+                        <!-- <button class="btn btn-sm btn-success edit-item-btn"
+                          (click)="editModal(content,data.cropTypeId)">
                           Edit
-                        </button>
+                        </button> -->
                       </div>
-                      <div class="remove">
-                        <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.cropTypeId)">
+                      <div class="remove me-3">
+                        <i class="ri-delete-bin-fill cursor text-muted" (click)="confirm(deleteModel,data.cropTypeId)"></i>
+                        <!-- <button class="btn btn-sm btn-danger remove-item-btn"
+                          (click)="confirm(deleteModel,data.cropTypeId)">
                           Remove
-                        </button>
+                        </button> -->
                       </div>
                     </div>
                   </td>
@@ -90,8 +90,8 @@
             <div class="col col-sm-6">
               <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">
                 Showing
-                {{ service.startIndex }} to {{ service.endIndex }} of
-                {{ service.totalRecords }}
+                {{ service.page }} to {{ service.pageSize }} of
+                {{ listItems[0]?.totalCount }}
                 entries
               </div>
             </div>

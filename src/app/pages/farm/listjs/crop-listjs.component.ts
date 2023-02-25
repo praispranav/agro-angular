@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import {
   UntypedFormBuilder,
-  FormGroup,
+  UntypedFormGroup,
   FormArray,
   Validators,
 } from "@angular/forms";
@@ -15,7 +15,6 @@ import Swal from "sweetalert2";
 import { CropListJsModel } from "./crop-listjs.model";
 import { ListJs } from "./data";
 import { CropService } from "./crop-listjs.service";
-import { CropTypeInterface } from "./crop-type.interface";
 import {
   NgbdOrdersSortableHeader,
   SortEvent,
@@ -35,14 +34,14 @@ export class CropListjsComponent {
   // bread crumb items
   breadCrumbItems!: Array<{}>;
   submitted = false;
-  listJsForm!: FormGroup;
+  listJsForm!: UntypedFormGroup;
   ListJsData!: CropListJsModel[];
   checkedList: any;
   cropSelected!: boolean;
   ListJsDatas: any;
   masterSelected!: boolean;
-  cropTypeData: any;
-  payload!: CropTypeInterface;
+  AreaMeasurementList = ["Hectare", "Acre", "Square", "Meter", "Square yard"];
+
   // Table data
   ListJsList!: Observable<CropListJsModel[]>;
   total: Observable<number>;
@@ -59,7 +58,7 @@ export class CropListjsComponent {
   }
 
   ngOnInit(): void {
-    this.getCropType();
+    this.getFarmList();
     /**
      * BreadCrumb
      */
@@ -72,9 +71,16 @@ export class CropListjsComponent {
      * Form Validation
      */
     this.listJsForm = this.formBuilder.group({
-      ids: [""],
-      crop_name: ["", [Validators.required]],
-      description: ["", [Validators.required]],
+      FarmTypeID: ["", [Validators.required]],
+      FarmName: ["", [Validators.required]],
+      FarmDescription: ["", [Validators.required]],
+      AreaSize: ["", [Validators.required]],
+      OwnerName: ["", [Validators.required]],
+      Location: ["", [Validators.required]],
+      PhoneNumber: ["", [Validators.required]],
+      Email: ["", [Validators.required]],
+      FarmProfileImageBase64: ["", [Validators.required]],
+      AreaSizeMeasurement: ["", [Validators.required]],
     });
 
     /**
@@ -85,7 +91,7 @@ export class CropListjsComponent {
     });
   }
 
-  getCropType(): void {
+  getFarmList(): void {
     this.service.getAll().subscribe(
       (res: any) => {
         this.listItems = res.data;
@@ -118,32 +124,22 @@ export class CropListjsComponent {
   saveListJs() {
     if (!this.listJsForm.valid) {
       return;
-      // if (this.listJsForm.get("ids")?.value) {
-      //   this.ListJsDatas = this.ListJsDatas.map((data: { id: any }) =>
-      //     data.id === this.listJsForm.get("ids")?.value
-      //       ? { ...data, ...this.listJsForm.value }
-      //       : data
-      //   );
-      // }
     } else {
-      // const crop_name = this.listJsForm.get("crop_name")?.value;
-      // const description = this.listJsForm.get("description")?.value;
-      // this.ListJsDatas.push({
-      //   crop_name,
-      //   description,
-      // });
       let formData = this.listJsForm.value;
-      this.payload = {
-        CropTypeName: formData.crop_name,
-        Description: formData.description,
+      let payload = {
+        FarmName: "Test Describtion for MasterCropName",
+        FarmDescription: "Test Describtion for MasterCropName",
+        FarmTypeID: 3,
+        AreaSize: 4,
+        OwnerName: "Prakash",
+        Location: "Melaka",
+        AreaSizeMeasurement: "hect",
+        PhoneNumber: "Test Describtion for MasterCropName",
+        Email: "Test Describtion for MasterCropName",
+        FarmProfileImageBase64: null,
       };
-      console.log("payload", this.payload);
-      if (this.cropTypeData?.cropTypeId) {
-        this.payload.cropTypeId = this.cropTypeData?.cropTypeId;
-        this.UpdateCrop(this.payload);
-      } else {
-        this.saveCrop(this.payload);
-      }
+      console.log("payload", payload);
+      this.saveFarm(payload);
     }
     setTimeout(() => {
       this.listJsForm.reset();
@@ -161,9 +157,9 @@ export class CropListjsComponent {
   /**
    * Confirmation mail model
    */
-  deleteId: any;
-  confirm(content: any, id: any) {
-    this.deleteId = id;
+  farmData: any;
+  confirm(content: any, data: any) {
+    this.farmData = data;
     this.modalService.open(content, { centered: true });
   }
 
@@ -193,19 +189,12 @@ export class CropListjsComponent {
   }
 
   // Delete Data
-  deleteData(id: any) {
+  deleteData() {
     let payload = {
-      cropTypeId: this.deleteId,
+      FarmID: this.farmData.farmID,
+      FarmName: this.farmData.farmName,
     };
-    this.deleteCrop(payload);
-    // if (id) {
-    //   document.getElementById("lj_" + id)?.remove();
-
-    // } else {
-    //   this.checkedValGet.forEach((item: any) => {
-    //     document.getElementById("lj_" + item)?.remove();
-    //   });
-    // }
+    this.deleteFarm(payload);
   }
 
   /**
@@ -214,21 +203,6 @@ export class CropListjsComponent {
    */
   editModal(content: any, id: any) {
     this.submitted = false;
-    this.listItems.forEach((element) => {
-      if (id === element.cropTypeId) {
-        this.cropTypeData = element;
-      }
-    });
-    console.log("cropTypeData", this.cropTypeData);
-    this.listJsForm.patchValue({
-      crop_name: this.cropTypeData?.cropTypeName
-        ? this.cropTypeData?.cropTypeName
-        : "",
-      description: this.cropTypeData?.description
-        ? this.cropTypeData?.description
-        : "",
-    });
-
     this.modalService.open(content, { size: "md", centered: true });
     var updateBtn = document.getElementById("add-btn") as HTMLAreaElement;
     var headingText = document.getElementById(
@@ -240,22 +214,22 @@ export class CropListjsComponent {
     // this.listItems.forEach((data) => {
     //   if (data.id === id) listData = data;
     // });
-    // var listData = this.ListJsDatas.filter(
-    //   (data: { id: any }) => data.id === id
-    // );
-    // console.log("listData", listData);
+    var listData = this.ListJsDatas.filter(
+      (data: { id: any }) => data.id === id
+    );
+    console.log("listData", listData);
 
     // this.listJsForm.controls["crop_name"].setValue(listData[0]?.crop_name);
     // this.listJsForm.controls["description"].setValue(listData[0]?.description);
     // this.listJsForm.controls["ids"].setValue(listData[0]?.id);
   }
 
-  saveCrop(payload: any): void {
-    this.service.cropTypeAdd(payload).subscribe(
+  saveFarm(payload: any): void {
+    this.service.farmAdd(payload).subscribe(
       (res: any) => {
         console.log("res", res);
         this.modalService.dismissAll();
-        this.getCropType();
+        this.getFarmList();
       },
       (err) => {
         console.log("err", err);
@@ -263,12 +237,11 @@ export class CropListjsComponent {
     );
   }
 
-  UpdateCrop(payload: any): void {
-    this.service.cropTypeUpdate(payload).subscribe(
+  UpdateFarm(payload: any): void {
+    this.service.farmUpdate(payload).subscribe(
       (res: any) => {
         console.log("res", res);
-        this.modalService.dismissAll();
-        this.getCropType();
+        this.getFarmList();
       },
       (err) => {
         console.log("err", err);
@@ -276,11 +249,11 @@ export class CropListjsComponent {
     );
   }
 
-  deleteCrop(payload: any): void {
-    this.service.cropTypeDelete(payload).subscribe(
+  deleteFarm(payload: any): void {
+    this.service.farmDelete(payload).subscribe(
       (res: any) => {
         console.log("res", res);
-        this.getCropType();
+        this.getFarmList();
       },
       (err) => {
         console.log("err", err);

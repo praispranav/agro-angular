@@ -6,7 +6,8 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between">
-        <h4 class="card-title mb-0">Master Crop</h4>
+        <h4 class="card-title mb-0">Farm</h4>
+
         <div class="d-flex">
           <div class="search-box ms-2">
             <input type="text" class="form-control search" placeholder="Search..." #search />
@@ -26,53 +27,38 @@
 
       <div class="card-body">
         <div id="customerList">
-
           <div class="table-responsive table-card mb-1">
             <table class="table">
               <thead>
                 <tr class="bg-light text-muted">
-                  <!-- <th scope="col" style="width: 50px">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="checkAll" value="option"
-                        [(ngModel)]="masterSelected" (change)="checkUncheckAll($event)">
-                    </div>
-                  </th> -->
                   <th class="sort" data-sort="masterCrop">Sr No</th>
-                  <th class="sort" data-sort="date">Master Crop Name</th>
-                  <th class="sort" data-sort="status">Master Crop Description</th>
+                  <th class="sort" data-sort="date">Farm Name</th>
+                  <th class="sort" data-sort="status">Farm Description</th>
                   <th class="sort">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let data of listItems; let i=index">
-                  <!-- <th scope="row">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" name="checkAll" value="{{ data.id }}"
-                        [(ngModel)]="data.state" />
-                    </div>
-                  </th> -->
                   <td>
                     {{i+1}}
                   </td>
                   <td>
-                    <ngb-highlight [result]="data.masterCropName" [term]="service.searchTerm"></ngb-highlight>
+                    <ngb-highlight [result]="data.farmName" [term]="service.searchTerm"></ngb-highlight>
                   </td>
                   <td>
-                    <ngb-highlight [result]="data.masterCropDescription" [term]="service.searchTerm"></ngb-highlight>
+                    <ngb-highlight [result]="data.farmDescription" [term]="service.searchTerm"></ngb-highlight>
                   </td>
-
                   <td>
                     <div class="d-flex gap-2">
                       <div class="edit ms-3">
-                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.cropTypeId)"></i>
-                        <!-- <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data.id)">
+                        <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data)"></i>
+                        <!-- <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data)">
                           Edit
                         </button> -->
                       </div>
                       <div class="remove me-3">
-                        <i class="ri-delete-bin-fill cursor text-muted"
-                          (click)="confirm(deleteModel,data.cropTypeId)"></i>
-                        <!-- <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data.id)">
+                        <i class="ri-delete-bin-fill cursor text-muted" (click)="confirm(deleteModel,data)"></i>
+                        <!-- <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data)">
                           Remove
                         </button> -->
                       </div>
@@ -94,12 +80,13 @@
             </div>
             <!-- Pagination -->
             <!-- <div class="col col-sm-6">
-              <div class="text-sm-right float-sm-end listjs-pagination">
-                <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page">
-                  [pageSize]="service.pageSize"
-                </ngb-pagination>
-              </div>
-            </div> -->
+                            <div class="text-sm-right float-sm-end listjs-pagination">
+                                <ngb-pagination [collectionSize]="(total | async)!" [(page)]="service.page"
+                                   >
+                                   [pageSize]="service.pageSize"
+                                </ngb-pagination>
+                            </div>
+                        </div> -->
             <!-- End Pagination -->
           </div>
         </div>
@@ -116,45 +103,79 @@
 <!-- Add ListJs Data -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header bg-light p-3">
-    <h5 class="modal-title" id="exampleModalLabel">Add Master Crop</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Add Crop Type</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
       (click)="modal.dismiss('Cross click')"></button>
   </div>
   <form (ngSubmit)="saveListJs()" [formGroup]="listJsForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
-      <input type="hidden" name="id" value="" formControlName="ids" />
       <div class="mb-3" id="modal-id" style="display: none;">
-        <label for="id-field" class="form-label">ID</label>
-        <input type="text" id="id-field" class="form-control" placeholder="ID" readonly />
+        <label for="id-field" class="form-label">Farm Type</label>
+        <input type="text" id="id-field" class="form-control" required placeholder="Farm Type"
+          formControlName="FarmTypeID" [ngClass]="{ 'is-invalid': submitted && form['FarmTypeID'].errors }" />
+        <div class="invalid-feedback">Please enter a farm type.</div>
       </div>
 
       <div class="mb-3">
-        <label for="customername-field" class="form-label">Crop Name</label>
-        <!-- <select class="form-control form-select" formControlName="cropTypeId" (click)="openCropTypePopup(cropType)"
-          [ngClass]="{ 'is-invalid': submitted && form['cropTypeId'].errors }">
-          <option [value]="cropTypeId"></option>
-
-        </select> -->
+        <label for="customername-field" class="form-label">Farm Name</label>
         <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="cropTypeId" [ngClass]="{ 'is-invalid': submitted && form['cropTypeId'].errors }"
-          (click)="openCropTypePopup(cropType)" />
-        <div class="invalid-feedback">Please enter a crop name.</div>
-      </div>
-
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Master Crop Name</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="masterCrop_name" [ngClass]="{ 'is-invalid': submitted && form['masterCrop_name'].errors }" />
-        <div class="invalid-feedback">Please enter a master crop name.</div>
+          formControlName="FarmName" [ngClass]="{ 'is-invalid': submitted && form['FarmName'].errors }" />
+        <div class="invalid-feedback">Please enter a farm name.</div>
       </div>
 
       <div class="mb-3">
         <label for="email-field" class="form-label">Description</label>
-        <textarea id="email-field" class="form-control" placeholder="Enter Crop Description" required
-          formControlName="description" [ngClass]="{ 'is-invalid': submitted && form['description'].errors }">
+        <textarea id="email-field" class="form-control" placeholder="Enter Farm Description" required
+          formControlName="FarmDescription" [ngClass]="{ 'is-invalid': submitted && form['FarmDescription'].errors }">
                 </textarea>
         <div class="invalid-feedback">Please enter description.</div>
       </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Area Size</label>
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Area Size" required
+          formControlName="AreaSize" [ngClass]="{ 'is-invalid': submitted && form['AreaSize'].errors }" />
+        <div class="invalid-feedback">Please enter a area size.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Owner Name</label>
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Owner Name" required
+          formControlName="OwnerName" [ngClass]="{ 'is-invalid': submitted && form['OwnerName'].errors }" />
+        <div class="invalid-feedback">Please enter a owner name.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Location</label>
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Location" required
+          formControlName="Location" [ngClass]="{ 'is-invalid': submitted && form['Location'].errors }" />
+        <div class="invalid-feedback">Please enter a location.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Phone Number</label>
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Phone Number" required
+          formControlName="PhoneNumber" [ngClass]="{ 'is-invalid': submitted && form['PhoneNumber'].errors }" />
+        <div class="invalid-feedback">Please enter a phone number.</div>
+      </div>
+
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Email</label>
+        <input type="text" id="customername-field" class="form-control" placeholder="Enter Email" required
+          formControlName="Email" [ngClass]="{ 'is-invalid': submitted && form['Email'].errors }" />
+        <div class="invalid-feedback">Please enter a email.</div>
+      </div>
+
+      <div class="mb-3">
+        <label for="customername-field" class="form-label">Area Size Measurement</label>
+        <select class="form-control form-select" required formControlName="AreaSizeMeasurement"
+          [ngClass]="{ 'is-invalid': submitted && form['AreaSizeMeasurement'].errors }">
+          <option *ngFor="let item of AreaMeasurementList" [value]="item">{{item}}</option>
+        </select>
+        <div class="invalid-feedback">Please enter a area size measurement.</div>
+      </div>
+
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
@@ -165,50 +186,6 @@
     </div>
   </form>
 </ng-template>
-
-<!-- Start crop type modal  -->
-<ng-template #cropType role="document" let-modal>
-  <div class="modal-header bg-light p-3">
-    <h5 class="modal-title" id="exampleModalLabel">Crop Type</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-      (click)="modal.dismiss('Cross click')"></button>
-  </div>
-  <div class="modal-body">
-    <div class="table-responsive table-card mt-3 mb-1">
-      <table class="table">
-        <thead>
-          <tr class="bg-light text-muted">
-            <th>#</th>
-            <th>Crop Type Name</th>
-            <th>Crop Description</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of cropTypeList; let i= index;" id="lj_{{ data.id }}">
-            <td>
-              {{i+1}}
-            </td>
-            <td>
-              <ngb-highlight [result]="data.cropTypeName"></ngb-highlight>
-            </td>
-            <td>
-              <ngb-highlight [result]="data.description"></ngb-highlight>
-            </td>
-            <td>
-              <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-primary" (click)="cropTypeAdd(data); modal.dismiss('Cross click')">
-                  Select
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</ng-template>
-<!-- End crop type modal -->
 
 <!-- removeItemModal -->
 <ng-template #deleteModel let-modal>
@@ -230,7 +207,7 @@
       <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
         <button class="btn btn-link link-success fw-medium text-decoration-none" data-bs-dismiss="modal"
           (click)="modal.close('Close click')"><i class="ri-close-line me-1 align-middle"></i> Close</button>
-        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData(deleteId)"
+        <button type="button" class="btn w-sm btn-danger " id="delete-product" (click)="deleteData()"
           (click)="modal.close('Close click')">Yes, Delete It!</button>
       </div>
     </div>

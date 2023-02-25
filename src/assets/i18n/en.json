@@ -21,16 +21,12 @@
         "JOB": "Job"
       }
     },
-    "MASTER": {
-      "TEXT": "Master",
-      "LIST": {
-        "CROPTYPE": "Crop Type",
-        "MASTERCROP": "Master Crop"
-      }
-    },
     "APPS": {
       "TEXT": "Apps Setting",
       "LIST": {
+        "CROPTYPE": "Crop Type",
+        "MASTERCROP": "Master Crop",
+        "FARM": "FARM",
         "CALENDAR": "Calendar",
         "CHAT": "Chat",
         "EMAIL": "Email",

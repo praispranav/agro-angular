@@ -161,7 +161,7 @@ export class CropListjsComponent {
   }
 
   cropTypeAdd(data: any): void {
-    this.cropTypeId=data.cropTypeId;
+    this.cropTypeId = data.cropTypeId;
     this.listJsForm.controls["cropTypeId"].setValue(data?.cropTypeName);
     // this.modalService.dismissAll();
   }
