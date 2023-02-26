@@ -229,8 +229,7 @@ export class CropListjsComponent {
       Description: this.cropTypeData?.masterCropDescription
         ? this.cropTypeData?.masterCropDescription
         : "",
-      MasterCropProfileImageBase64: this.cropTypeData
-        ?.masterCropProfilePicURL
+      MasterCropProfileImageBase64: this.cropTypeData?.masterCropProfilePicURL
         ? this.cropTypeData?.masterCropProfilePicURL
         : "",
     });
@@ -239,8 +238,12 @@ export class CropListjsComponent {
     var headingText = document.getElementById(
       "exampleModalLabel"
     ) as HTMLAreaElement;
-    headingText.innerHTML = "Edit Crop Type";
+    headingText.innerHTML = "Edit Master Crop";
     updateBtn.innerHTML = "Update";
+  }
+
+  resetForm(): void {
+    this.listJsForm.reset();
   }
 
   saveCrop(payload: any): void {

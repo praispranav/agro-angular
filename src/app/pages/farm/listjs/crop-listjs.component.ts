@@ -208,6 +208,10 @@ export class CropListjsComponent {
     this.deleteFarm(payload);
   }
 
+  resetForm(): void {
+    this.listJsForm.reset();
+  }
+
   /**
    * Open modal
    * @param content modal content
@@ -243,7 +247,7 @@ export class CropListjsComponent {
     var headingText = document.getElementById(
       "exampleModalLabel"
     ) as HTMLAreaElement;
-    headingText.innerHTML = "Edit Crop Type";
+    headingText.innerHTML = "Edit Farm Type";
     updateBtn.innerHTML = "Update";
   }
 

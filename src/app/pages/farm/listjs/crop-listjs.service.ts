@@ -189,7 +189,7 @@ export class CropService {
       "Bearer " + localStorage.getItem("token")
     );
     return this.http.get(
-      `https://dev.endpoint.smartagrofarm.my/api/AppSetting/GetFarmDetailList_Paging?displayLength=10&displayStart=0`,
+      `https://dev.endpoint.smartagrofarm.my/api/Lookup/LookUpFarmType`,
       { headers: headers }
     );
   }
