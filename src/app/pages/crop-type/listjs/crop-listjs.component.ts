@@ -192,6 +192,10 @@ export class CropListjsComponent {
     this.checkedValGet = checkedVal;
   }
 
+  resetForm(): void {
+    this.listJsForm.reset();
+  }
+
   // Delete Data
   deleteData(id: any) {
     let payload = {

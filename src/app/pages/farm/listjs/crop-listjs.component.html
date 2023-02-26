@@ -34,7 +34,7 @@
                   <th class="sort" data-sort="masterCrop">Sr No</th>
                   <th class="sort" data-sort="date">Farm Name</th>
                   <th class="sort" data-sort="status">Farm Description</th>
-                  <th class="sort">Action</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -52,15 +52,9 @@
                     <div class="d-flex gap-2">
                       <div class="edit ms-3">
                         <i class="ri-pencil-fill cursor text-muted" (click)="editModal(content,data.farmID)"></i>
-                        <!-- <button class="btn btn-sm btn-success edit-item-btn" (click)="editModal(content,data)">
-                          Edit
-                        </button> -->
                       </div>
                       <div class="remove me-3">
                         <i class="ri-delete-bin-fill cursor text-muted" (click)="confirm(deleteModel,data)"></i>
-                        <!-- <button class="btn btn-sm btn-danger remove-item-btn" (click)="confirm(deleteModel,data)">
-                          Remove
-                        </button> -->
                       </div>
                     </div>
                   </td>
@@ -103,95 +97,93 @@
 <!-- Add ListJs Data -->
 <ng-template #content role="document" let-modal>
   <div class="modal-header bg-light p-3">
-    <h5 class="modal-title" id="exampleModalLabel">Add Crop Type</h5>
+    <h5 class="modal-title" id="exampleModalLabel">Add Farm Type</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"
-      (click)="modal.dismiss('Cross click')"></button>
+      (click)="resetForm(); modal.dismiss('Cross click')"></button>
   </div>
   <form (ngSubmit)="saveListJs()" [formGroup]="listJsForm" class="tablelist-form" autocomplete="off">
     <div class="modal-body">
 
-      <div class="mb-3">
-        <label for="id-field" class="form-label">Farm Type</label>
-        <input type="text" id="id-field" class="form-control" required placeholder="Farm Type"
-          formControlName="FarmTypeID" [ngClass]="{ 'is-invalid': submitted && form['FarmTypeID'].errors }"
-          (click)="openFarmTypePopup(farmType)" />
-        <i class="bx bx-chevron-down dropdown"></i>
-        <div class="invalid-feedback">Please enter a farm type.</div>
-      </div>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+          <label for="customername-field" class="form-label">Farm Name</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
+            formControlName="FarmName" [ngClass]="{ 'is-invalid': submitted && form['FarmName'].errors }" />
+          <div class="invalid-feedback">Please enter a farm name.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Farm Name</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Name" required
-          formControlName="FarmName" [ngClass]="{ 'is-invalid': submitted && form['FarmName'].errors }" />
-        <div class="invalid-feedback">Please enter a farm name.</div>
-      </div>
+        <div class="col-md-12 mb-3">
+          <label for="id-field" class="form-label">Farm Type</label>
+          <input type="text" id="id-field" class="form-control" required placeholder="Select Farm Type"
+            formControlName="FarmTypeID" [ngClass]="{ 'is-invalid': submitted && form['FarmTypeID'].errors }"
+            (click)="openFarmTypePopup(farmType)" />
+          <i class="bx bx-chevron-down input-dropdown"></i>
+          <div class="invalid-feedback">Please enter a farm type.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="email-field" class="form-label">Description</label>
-        <textarea id="email-field" class="form-control" placeholder="Enter Farm Description" required
-          formControlName="FarmDescription" [ngClass]="{ 'is-invalid': submitted && form['FarmDescription'].errors }">
-                </textarea>
-        <div class="invalid-feedback">Please enter description.</div>
-      </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Area Size</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Area Size" required
-          formControlName="AreaSize" [ngClass]="{ 'is-invalid': submitted && form['AreaSize'].errors }" />
-        <div class="invalid-feedback">Please enter a area size.</div>
-      </div>
+        <div class="col-md-6 mb-3">
+          <label for="customername-field" class="form-label">Area Size</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="Enter Area Size" required
+            formControlName="AreaSize" [ngClass]="{ 'is-invalid': submitted && form['AreaSize'].errors }" />
+          <div class="invalid-feedback">Please enter a area size.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Owner Name</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Owner Name" required
-          formControlName="OwnerName" [ngClass]="{ 'is-invalid': submitted && form['OwnerName'].errors }" />
-        <div class="invalid-feedback">Please enter a owner name.</div>
-      </div>
+        <div class="col-md-6 mb-3">
+          <label for="customername-field" class="form-label">Area Size Measurement</label>
+          <select class="form-control form-select" required formControlName="AreaSizeMeasurement"
+            [ngClass]="{ 'is-invalid': submitted && form['AreaSizeMeasurement'].errors }">
+            <option *ngFor="let item of AreaMeasurementList" [value]="item">{{item}}</option>
+          </select>
+          <div class="invalid-feedback">Please enter a area size measurement.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Location</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Location" required
-          formControlName="Location" [ngClass]="{ 'is-invalid': submitted && form['Location'].errors }" />
-        <div class="invalid-feedback">Please enter a location.</div>
-      </div>
+        <div class="col-md-12 mb-3">
+          <label for="customername-field" class="form-label">Location</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="Enter Location" required
+            formControlName="Location" [ngClass]="{ 'is-invalid': submitted && form['Location'].errors }" />
+          <div class="invalid-feedback">Please enter a location.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Phone Number</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Phone Number" required
-          formControlName="PhoneNumber" [ngClass]="{ 'is-invalid': submitted && form['PhoneNumber'].errors }" />
-        <div class="invalid-feedback">Please enter a phone number.</div>
-      </div>
+        <div class="col-md-12 mb-3">
+          <label for="customername-field" class="form-label">Owner Name</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="Enter Owner Name" required
+            formControlName="OwnerName" [ngClass]="{ 'is-invalid': submitted && form['OwnerName'].errors }" />
+          <div class="invalid-feedback">Please enter a owner name.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Email</label>
-        <input type="text" id="customername-field" class="form-control" placeholder="Enter Email" required
-          formControlName="Email" [ngClass]="{ 'is-invalid': submitted && form['Email'].errors }" />
-        <div class="invalid-feedback">Please enter a email.</div>
-      </div>
+        <div class="col-md-6 mb-3">
+          <label for="customername-field" class="form-label">Phone Number</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="Enter Phone Number" required
+            formControlName="PhoneNumber" [ngClass]="{ 'is-invalid': submitted && form['PhoneNumber'].errors }" />
+          <div class="invalid-feedback">Please enter a phone number.</div>
+        </div>
 
-      <div class="mb-3">
-        <label for="customername-field" class="form-label">Area Size Measurement</label>
-        <select class="form-control form-select" required formControlName="AreaSizeMeasurement"
-          [ngClass]="{ 'is-invalid': submitted && form['AreaSizeMeasurement'].errors }">
-          <option *ngFor="let item of AreaMeasurementList" [value]="item">{{item}}</option>
-        </select>
-        <div class="invalid-feedback">Please enter a area size measurement.</div>
-      </div>
+        <div class="col-md-6 mb-3">
+          <label for="customername-field" class="form-label">Email</label>
+          <input type="text" id="customername-field" class="form-control" placeholder="Enter Email" required
+            formControlName="Email" [ngClass]="{ 'is-invalid': submitted && form['Email'].errors }" />
+          <div class="invalid-feedback">Please enter a email.</div>
+        </div>
 
-      <!-- <div class="mb-3">
-        <label for="customername-field" class="form-label">Farm Profile Image</label>
-        <input type="file" accept="image/*" class="form-control" formControlName="FarmProfileImageBase64" (change)="selectFile($event)"/>
-      </div> -->
+        <div class="mb-3">
+          <dropzone class="dropzone_sec" (change)="selectFile($event)"></dropzone>
+        </div>
 
-      <div class="mb-3">
-        <dropzone class="dropzone_sec" (change)="selectFile($event)"></dropzone>
+        <div class="mb-3">
+          <label for="email-field" class="form-label">Description</label>
+          <textarea id="email-field" class="form-control" placeholder="Enter Farm Description" required
+            formControlName="FarmDescription" [ngClass]="{ 'is-invalid': submitted && form['FarmDescription'].errors }">
+            </textarea>
+          <div class="invalid-feedback">Please enter description.</div>
+        </div>
       </div>
 
     </div>
     <div class="modal-footer">
       <div class="hstack gap-2 justify-content-end">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
-          (click)="modal.close('Close click')">Close</button>
+          (click)="resetForm(); modal.close('Close click')">Close</button>
         <button type="submit" class="btn btn-success" id="add-btn">Save</button>
       </div>
     </div>
@@ -249,7 +241,7 @@
               {{i+1}}
             </td>
             <td>
-              <ngb-highlight [result]="data.cropTypeName"></ngb-highlight>
+              <ngb-highlight [result]="data.farmTypeName"></ngb-highlight>
             </td>
             <td>
               <ngb-highlight [result]="data.description"></ngb-highlight>

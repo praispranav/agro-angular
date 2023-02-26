@@ -12,7 +12,7 @@
       "TEXT": "Dashboard",
       "BADGE": "New",
       "LIST": {
-        "ANALYTICS": "Analytics",
+        "ANALYTICS": "ADMIN",
         "CRM": "CRM",
         "ECOMMERCE": "Ecommerce",
         "CRYPTO": "Crypto",
@@ -24,8 +24,8 @@
     "APPS": {
       "TEXT": "Apps Setting",
       "LIST": {
-        "CROPTYPE": "Crop Type",
-        "MASTERCROP": "Master Crop",
+        "CROPTYPE": "CROP TYPE",
+        "MASTERCROP": "MASTER CROP",
         "FARM": "FARM",
         "LOOKUPS": "LOOKUPS",
         "CALENDAR": "Calendar",
