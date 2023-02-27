@@ -167,7 +167,16 @@
         </div>
 
         <div class="mb-3">
-          <dropzone class="dropzone_sec" (change)="selectFile($event)"></dropzone>
+          <div class="image-upload">
+            <div *ngIf="!imageBase64">
+              <input type="file" accept="image/*" id="fileInput" (change)="selectFile($event)">
+              <p class="text-center">Drag and drop file here.</p>
+            </div>
+  
+            <div class="image-preview" *ngIf="imageBase64">
+              <img [src]="imageBase64">
+            </div>
+          </div>
         </div>
 
         <div class="mb-3">

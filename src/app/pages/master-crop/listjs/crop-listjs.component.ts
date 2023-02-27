@@ -113,10 +113,13 @@ export class CropListjsComponent {
   }
 
   selectFile(event: any): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imageBase64 = e.target.result;
-    };
+    let file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageBase64 = e.target.result;
+      };
+    }
   }
   /**
    * Open modal
@@ -212,15 +215,13 @@ export class CropListjsComponent {
     this.listJsForm.controls["CropTypeId"].setValue(
       this.cropTypeData.cropTypeName
     );
+    this.imageBase64 = this.cropTypeData?.masterCropProfilePicURL ? this.cropTypeData?.masterCropProfilePicURL : '';
     this.listJsForm.patchValue({
       MasterCropName: this.cropTypeData?.masterCropName
         ? this.cropTypeData?.masterCropName
         : "",
       Description: this.cropTypeData?.masterCropDescription
         ? this.cropTypeData?.masterCropDescription
-        : "",
-      MasterCropProfileImageBase64: this.cropTypeData?.masterCropProfilePicURL
-        ? this.cropTypeData?.masterCropProfilePicURL
         : "",
     });
     this.modalService.open(content, { size: "md", centered: true });

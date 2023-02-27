@@ -146,10 +146,13 @@ export class CropListjsComponent {
   }
 
   selectFile(event: any): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imageBase64 = e.target.result;
-    };
+    let file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageBase64 = e.target.result;
+      };
+    }
   }
 
   /**
@@ -225,6 +228,7 @@ export class CropListjsComponent {
     });
     console.log("farmData", this.farmData);
     this.listJsForm.controls["FarmTypeID"].setValue(this.farmData.farmTypeName);
+    this.imageBase64 = this.farmData?.farmProfilePicURL ? this.farmData?.farmProfilePicURL : '';
     this.listJsForm.patchValue({
       FarmName: this.farmData?.farmName ? this.farmData?.farmName : "",
       FarmDescription: this.farmData?.farmDescription
@@ -238,9 +242,6 @@ export class CropListjsComponent {
         : "",
       PhoneNumber: this.farmData?.phoneNumber ? this.farmData?.phoneNumber : "",
       Email: this.farmData?.email ? this.farmData?.email : "",
-      FarmProfileImageBase64: this.farmData?.farmProfilePicURL
-        ? this.farmData?.farmProfilePicURL
-        : "",
     });
     this.modalService.open(content, { size: "md", centered: true });
     var updateBtn = document.getElementById("add-btn") as HTMLAreaElement;
