@@ -159,7 +159,7 @@ export class CropListjsComponent {
     if (!this.listJsForm.valid) {
       return;
     } else {
-      if (this.farmData.masterCropID) {
+      if (this.farmData?.masterCropID) {
         this.listJsForm.controls["FarmTypeID"].setValue(
           this.farmData.farmTypeId
         );
@@ -193,7 +193,7 @@ export class CropListjsComponent {
     this.submitted = true;
   }
 
-  farmDeletData:any;
+  farmDeletData: any;
   confirm(content: any, data: any) {
     this.farmDeletData = data;
     this.modalService.open(content, { centered: true });
